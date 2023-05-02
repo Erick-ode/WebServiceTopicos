@@ -24,7 +24,7 @@ public class InMemoryReportDAO implements ReportDAO{
 
     @Override
     public void remove(int id) {
-incidentReports.remove(id);
+        incidentReports.remove(id);
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.DateTimeException;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class ReportManager implements ReportRules{
@@ -21,6 +22,18 @@ public class ReportManager implements ReportRules{
             throw new DateTimeException("A data informada é maior que a data atual!");
         }
     }
+
+    @Override
+    public List<StolenVehicleReport> readAll() {
+        return reportDAO.readAll();
+    }
+
+    @Override
+    public void remove(int id) {
+        reportDAO.remove(id);
+    }
+
+
     public boolean isDataValid(Date reportDate){
         Date currentDate = new Date();
         return reportDate.before(currentDate) || reportDate.equals(currentDate);
