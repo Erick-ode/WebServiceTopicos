@@ -29,6 +29,21 @@ public class ReportManager implements ReportRules{
     }
 
     @Override
+    public StolenVehicleReport readById(int id) {
+        return reportDAO.readById(id);
+    }
+
+    @Override
+    public List<StolenVehicleReport> readByCity(String city) {
+        return reportDAO.readByCity(city);
+    }
+
+    @Override
+    public List<StolenVehicleReport> readByDayTime(String dayTime) {
+        return reportDAO.readByDayTime(dayTime);
+    }
+
+    @Override
     public void remove(int id) {
         reportDAO.remove(id);
     }

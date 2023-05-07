@@ -7,7 +7,11 @@ import java.util.List;
 public interface ReportDAO {
 
     public void register(StolenVehicleReport stolenVehicleReportort);
-    public StolenVehicleReport read(int id);
+
+    public StolenVehicleReport readById(int id);
+    public List<StolenVehicleReport> readByCity(String city);
+    public List<StolenVehicleReport> readByDayTime(String dayTime);
+
     public void remove(int id);
     public List<StolenVehicleReport> readAll();
 }

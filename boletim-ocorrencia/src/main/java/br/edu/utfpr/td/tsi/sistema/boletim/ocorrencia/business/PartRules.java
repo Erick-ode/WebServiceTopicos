@@ -10,5 +10,4 @@ public interface PartRules {
     public String hideEmail(String email);
     public String hidePhoneNumber(String phoneNumber);
 
-    public void registerPart(Part part);
 }

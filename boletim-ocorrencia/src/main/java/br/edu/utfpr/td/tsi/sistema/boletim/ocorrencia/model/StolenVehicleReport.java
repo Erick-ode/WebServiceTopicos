@@ -1,13 +1,12 @@
 package br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model;
 
 import java.util.Date;
-import java.util.List;
 
 public class StolenVehicleReport {
 
     private Integer id;
     private Date occurrenceDate;
-    private String occurrencePeriod;
+    private String occurrenceDayTime;
     private Part part;
     private Address occurrenceLocal;
     private Vehicle stolenVehicle;
@@ -28,12 +27,12 @@ public class StolenVehicleReport {
         this.occurrenceDate = occurrenceDate;
     }
 
-    public String getOccurrencePeriod() {
-        return occurrencePeriod;
+    public String getOccurrenceDayTime() {
+        return occurrenceDayTime;
     }
 
     public void setOccurrencePeriod(String occurrencePeriod) {
-        this.occurrencePeriod = occurrencePeriod;
+        this.occurrenceDayTime = occurrencePeriod;
     }
 
     public Part getPart() {

@@ -1,6 +1,5 @@
 package br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.business;
 
-import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.dao.InMemoryPartDAO;
 import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.Part;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,8 +10,6 @@ import java.util.regex.Pattern;
 @Component
 public class PartManager implements PartRules{
 
-    @Autowired
-    private InMemoryPartDAO partDAO;
     @Override
     public boolean isValidEmail(String email) {
         String regex = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -78,12 +75,6 @@ public class PartManager implements PartRules{
         } else {
             return "Número de telefone inválido.";
         }
-    }
-
-    @Override
-    public void registerPart(Part part) {
-        if (isValidEmail(part.getEmail()) && isValidPhoneNumber(part.getPhone()))
-            partDAO.register(hidePartInformations(part));
     }
 
     public Part hidePartInformations(Part part){
