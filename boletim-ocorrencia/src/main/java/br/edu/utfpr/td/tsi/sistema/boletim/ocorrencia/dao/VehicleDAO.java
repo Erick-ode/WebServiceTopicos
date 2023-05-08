@@ -9,6 +9,11 @@ public interface VehicleDAO {
 
     public void register(Vehicle vehicle);
     public Vehicle read(Registration registration);
+    public Vehicle readByPlate(String plate);
+    public Vehicle readByColor(String color);
+    public Vehicle readByType (String type);
     public void remove(Vehicle vehicle);
     public List<Vehicle> readAll();
+    
+    
 }

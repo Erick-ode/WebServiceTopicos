@@ -34,4 +34,29 @@ public class InMemoryVehicleDAO implements VehicleDAO {
     public List<Vehicle> readAll() {
         return registeredsVehicles;
     }
+
+    @Override
+	public Vehicle readByPlate(String plate) {
+		return registeredsVehicles.stream()
+				.filter(vehicle -> vehicle.getRegistration().getPlate().equals(plate))
+				.findFirst()
+				.orElse(null);
+	}
+
+	@Override
+	public Vehicle readByColor(String color) {
+		return registeredsVehicles.stream()
+				.filter(vehicle -> vehicle.getColor().equals(color))
+				.findFirst()
+				.orElse(null);
+	}
+
+	@Override
+	public Vehicle readByType(String type) {
+		return registeredsVehicles.stream()
+				.filter(vehicle -> vehicle.getType().equals(type))
+				.findFirst()
+				.orElse(null);
+	}	
+
 }
