@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Path("boletim")
@@ -72,7 +71,7 @@ public class Endpoint {
     @Produces({"application/json"})
     @Consumes({"application/json"})
     public Response edit(final StolenVehicleReport bo) {
-        this.reportRules.register(bo);
+        this.reportRules.update(bo);
         return Response.ok((Object) bo).build();
     }
 
