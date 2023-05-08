@@ -1,7 +1,5 @@
 package br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.business;
 
-import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.Part;
-
 public interface PartRules {
 
     public boolean isValidEmail(String email);

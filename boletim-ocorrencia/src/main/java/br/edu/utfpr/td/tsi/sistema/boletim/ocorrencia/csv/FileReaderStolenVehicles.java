@@ -4,6 +4,9 @@ import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.Address;
 import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.Registration;
 import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.StolenVehicleReport;
 import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.Vehicle;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -25,19 +28,16 @@ public class FileReaderStolenVehicles {
 
     private List<StolenVehicleReport> readCSVFile() {
         final List<StolenVehicleReport> listOfReports = new ArrayList<>();
+        try {
+            CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().withDelimiter('\t').parse(new FileReader("furtos.csv"));
+            final List<CSVRecord> records = (List<CSVRecord>)csvParser.getRecords();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("furtos.csv"))) {
-            String line;
-            String[] headerNames = br.readLine().split("\t");
-            List<String> headers = new ArrayList<>(Arrays.asList(headerNames));
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split("\t");
-                Vehicle stolenVehicle = this.createVehicle(columns, headers);
-                StolenVehicleReport vehicleReport = this.createVehicleReport(columns, headers);
+            for (CSVRecord record : records) {
+                Vehicle stolenVehicle = createVehicle(record);
+                StolenVehicleReport vehicleReport = createVehicleReport(record);
 
                 vehicleReport.setStolenVehicle(stolenVehicle);
                 listOfReports.add(vehicleReport);
-
             }
 
         } catch (IOException e) {
@@ -46,44 +46,50 @@ public class FileReaderStolenVehicles {
         return listOfReports;
     }
 
-    private Vehicle createVehicle(String[] data, List<String> headers) {
+    private static Vehicle createVehicle(CSVRecord record) {
         Registration registration = new Registration();
-
-        registration.setState(data[headers.indexOf("UF_VEICULO")]);
-        registration.setPlate(data[headers.indexOf("PLACA_VEICULO")]);
-        registration.setCity(data[headers.indexOf("CIDADE_VEICULO")]);
-
         Vehicle vehicle = new Vehicle();
 
+        registration.setState(record.get("UF_VEICULO"));
+        registration.setPlate(record.get("PLACA_VEICULO"));
+        registration.setCity(record.get("CIDADE_VEICULO"));
+
         vehicle.setRegistration(registration);
-        vehicle.setYear(Integer.valueOf(data[headers.indexOf("ANO_FABRICACAO")]));
-        vehicle.setType(data[headers.indexOf("DESCR_TIPO_VEICULO")]);
-        vehicle.setColor(data[headers.indexOf("DESCR_COR_VEICULO")]);
-        vehicle.setBrand(data[headers.indexOf("DESCR_MARCA_VEICULO")]);
+        int year = 0;
+        try{
+            year = Integer.parseInt(record.get("ANO_FABRICACAO"));
+        }catch (NumberFormatException e){
+            year = 0;
+        }
+        vehicle.setYear(year);
+        vehicle.setType(record.get("DESCR_TIPO_VEICULO"));
+        vehicle.setColor(record.get("DESCR_COR_VEICULO"));
+        vehicle.setBrand(record.get("DESCR_MARCA_VEICULO"));
 
         return vehicle;
     }
 
-    private StolenVehicleReport createVehicleReport(String[] data, List<String> headers) {
-        String occuranceDateString = data[headers.indexOf("DATAOCORRENCIA")];
+
+    private static StolenVehicleReport createVehicleReport(CSVRecord record) {
+        String occurrenceDateString = record.get("DATAOCORRENCIA");
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate occuranceDate = LocalDate.parse(occuranceDateString, dateTimeFormatter);
+        LocalDate occurrenceDate = LocalDate.parse(occurrenceDateString, dateTimeFormatter);
 
         Address address = new Address();
-        address.setStreetName(data[headers.indexOf("LOGRADOURO")]);
-        address.setNumber(Integer.valueOf(data[headers.indexOf("NUMERO")]));
-        address.setDistrict(data[headers.indexOf("BAIRRO")]);
-        address.setCity(data[headers.indexOf("CIDADE")]);
-        address.setState(data[headers.indexOf("UF")]);
+        address.setStreetName(record.get("LOGRADOURO"));
+        address.setNumber(Integer.valueOf(record.get("NUMERO")));
+        address.setDistrict(record.get("BAIRRO"));
+        address.setCity(record.get("CIDADE"));
+        address.setState(record.get("UF"));
 
         StolenVehicleReport report = new StolenVehicleReport();
-        Random rdm = new Random();
-        report.setId(rdm.nextInt(1) + 1000);
-        report.setOccurrenceDate(occuranceDate);
+        Random random = new Random();
+        report.setId(random.nextInt(1000) + 1000);
+        report.setOccurrenceDate(occurrenceDate);
         report.setOccurrenceLocal(address);
-        report.setOccurrenceDayTime(data[headers.indexOf("PERIDOOCORRENCIA")]);
+        report.setOccurrenceDayTime(record.get("PERIDOOCORRENCIA"));
 
         return report;
-
     }
+
 }

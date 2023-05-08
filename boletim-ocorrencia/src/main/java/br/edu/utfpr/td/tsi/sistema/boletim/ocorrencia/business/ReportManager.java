@@ -6,21 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.DateTimeException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class ReportManager implements ReportRules{
+public class ReportManager implements ReportRules {
     @Autowired
     private InMemoryReportDAO reportDAO;
 
+    @Autowired
+    private PartManager partManager;
+
     @Override
     public void register(StolenVehicleReport report) {
-        if (isDataValid(report.getOccurrenceDate())){
+        if (isDataValid(report.getOccurrenceDate())) {
+            report.setPart(partManager.hidePartInformations(report.getPart()));
             reportDAO.register(report);
-        }else {
+        } else {
             throw new DateTimeException("A data informada é maior que a data atual!");
         }
+    }
+
+    @Override
+    public void update(StolenVehicleReport report) {
+        reportDAO.update(report);
     }
 
     @Override
@@ -49,8 +58,8 @@ public class ReportManager implements ReportRules{
     }
 
 
-    public boolean isDataValid(Date reportDate){
-        Date currentDate = new Date();
-        return reportDate.before(currentDate) || reportDate.equals(currentDate);
+    public boolean isDataValid(LocalDate reportDate) {
+        LocalDate currentDate = LocalDate.now();
+        return reportDate.isBefore(currentDate) || reportDate.isEqual(currentDate);
     }
 }

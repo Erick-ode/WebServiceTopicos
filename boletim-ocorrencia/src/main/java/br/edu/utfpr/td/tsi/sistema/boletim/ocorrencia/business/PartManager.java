@@ -1,7 +1,6 @@
 package br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.business;
 
 import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.Part;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;

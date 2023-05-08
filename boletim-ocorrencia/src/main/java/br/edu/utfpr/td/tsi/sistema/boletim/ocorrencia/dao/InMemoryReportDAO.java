@@ -1,17 +1,40 @@
 package br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.dao;
 
+import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.csv.FileReaderStolenVehicles;
 import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model.StolenVehicleReport;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class InMemoryReportDAO implements ReportDAO{
-    List<StolenVehicleReport> incidentReports = new ArrayList<>();
+public class InMemoryReportDAO implements ReportDAO {
+
+    @Autowired
+    private FileReaderStolenVehicles fileReaderStolenVehicles;
+    List<StolenVehicleReport> incidentReports;
+
+
+    @PostConstruct
+    public void init(){
+        incidentReports = new ArrayList<>(fileReaderStolenVehicles.getReports());
+    }
+
     @Override
     public void register(StolenVehicleReport stolenVehicleReport) {
         incidentReports.add(stolenVehicleReport);
+    }
+
+    @Override
+    public void update(StolenVehicleReport stolenVehicleReport) {
+        StolenVehicleReport existingReport = this.readById(stolenVehicleReport.getId());
+
+        existingReport.setOccurrenceDate(stolenVehicleReport.getOccurrenceDate());
+        existingReport.setOccurrenceLocal(stolenVehicleReport.getOccurrenceLocal());
+        existingReport.setOccurrenceDayTime(stolenVehicleReport.getOccurrenceDayTime());
+        existingReport.setStolenVehicle(stolenVehicleReport.getStolenVehicle());
     }
 
     @Override

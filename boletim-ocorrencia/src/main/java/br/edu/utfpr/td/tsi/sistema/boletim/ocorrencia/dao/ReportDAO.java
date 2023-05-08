@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface ReportDAO {
 
-    public void register(StolenVehicleReport stolenVehicleReportort);
+    public void register(StolenVehicleReport stolenVehicleReport);
+    public void update(StolenVehicleReport stolenVehicleReport);
 
     public StolenVehicleReport readById(int id);
     public List<StolenVehicleReport> readByCity(String city);

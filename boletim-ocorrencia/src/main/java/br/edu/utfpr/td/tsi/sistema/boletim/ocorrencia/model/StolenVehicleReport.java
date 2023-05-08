@@ -1,11 +1,11 @@
 package br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class StolenVehicleReport {
 
     private Integer id;
-    private Date occurrenceDate;
+    private LocalDate occurrenceDate;
     private String occurrenceDayTime;
     private Part part;
     private Address occurrenceLocal;
@@ -19,11 +19,11 @@ public class StolenVehicleReport {
         this.id = id;
     }
 
-    public Date getOccurrenceDate() {
+    public LocalDate getOccurrenceDate() {
         return occurrenceDate;
     }
 
-    public void setOccurrenceDate(Date occurrenceDate) {
+    public void setOccurrenceDate(LocalDate occurrenceDate) {
         this.occurrenceDate = occurrenceDate;
     }
 
@@ -31,7 +31,7 @@ public class StolenVehicleReport {
         return occurrenceDayTime;
     }
 
-    public void setOccurrencePeriod(String occurrencePeriod) {
+    public void setOccurrenceDayTime(String occurrencePeriod) {
         this.occurrenceDayTime = occurrencePeriod;
     }
 

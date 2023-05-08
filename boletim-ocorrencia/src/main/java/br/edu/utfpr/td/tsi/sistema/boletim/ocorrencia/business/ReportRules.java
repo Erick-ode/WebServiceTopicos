@@ -6,10 +6,11 @@ import java.util.List;
 
 public interface ReportRules {
     public void register(StolenVehicleReport report);
-
+    public void update(StolenVehicleReport report);
     public List<StolenVehicleReport> readAll();
     public StolenVehicleReport readById(int id);
     public List<StolenVehicleReport> readByCity(String city);
     public List<StolenVehicleReport> readByDayTime(String dayTime);
     public void remove(int id);
 }
+
