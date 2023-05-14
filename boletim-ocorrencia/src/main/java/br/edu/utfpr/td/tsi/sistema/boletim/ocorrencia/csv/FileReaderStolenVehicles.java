@@ -8,8 +8,12 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
+import br.edu.utfpr.td.tsi.sistema.boletim.ocorrencia.csv.*;
 
 import java.io.*;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -28,8 +32,11 @@ public class FileReaderStolenVehicles {
 
     private List<StolenVehicleReport> readCSVFile() {
         final List<StolenVehicleReport> listOfReports = new ArrayList<>();
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("furtos.csv");
+        InputStreamReader reader = new InputStreamReader(inputStream);
         try {
-            CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().withDelimiter('\t').parse(new FileReader("furtos.csv"));
+            CSVParser csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().withDelimiter('\t').parse(reader);
             final List<CSVRecord> records = (List<CSVRecord>)csvParser.getRecords();
 
             for (CSVRecord record : records) {
